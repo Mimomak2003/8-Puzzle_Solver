@@ -48,10 +48,16 @@ class Puzzle():
             [self.zero_position[0], self.zero_position[1] + 1]
         ]
         # Returns only the ones that are possible in our case.
-        return [self.rows[i[0]][i[1]] for i in positions if -1 not in i and 3 not in i]
+        return {self.rows[i[0]][i[1]] for i in positions if -1 not in i and 3 not in i}
 
     def checkSolved(self):
         return self.rows[0] == ['0','1','2'] and self.rows[1] == ['3','4','5'] and self.rows[2] == ['6','7','8']
+
+    def copy(self):
+        return Puzzle(self.rows[0].copy(), self.rows[1].copy(), self.rows[2].copy())
+
+    def equals(self, another_puzzle):
+        return self.rows == another_puzzle.rows
 
     def printPuzzle(self):
         x = "-------------"
