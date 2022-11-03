@@ -1,6 +1,6 @@
 class Puzzle():
-    def __init__(self, row0: list, row1: list, row2: list):
-        self.rows = [row0, row1, row2]
+    def __init__(self, rows: list):
+        self.rows = [rows[:3], rows[3:6], rows[6:]]
         self.zero_position = self.findNum('0')
 
     def findNum(self, num: str):
@@ -54,7 +54,10 @@ class Puzzle():
         return self.rows[0] == ['0','1','2'] and self.rows[1] == ['3','4','5'] and self.rows[2] == ['6','7','8']
 
     def copy(self):
-        return Puzzle(self.rows[0].copy(), self.rows[1].copy(), self.rows[2].copy())
+        x = self.rows[0].copy()
+        x.extend(self.rows[1])
+        x.extend(self.rows[2])
+        return Puzzle(x)
 
     def equals(self, another_puzzle):
         return self.rows == another_puzzle.rows
