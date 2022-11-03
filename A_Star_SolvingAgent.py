@@ -31,7 +31,7 @@ class SolvingAgent():
         # Put the initial state into the priority queue with no parent or swapped number, and a cost of 0
         self.pqueue.put((self.h(initial_state), Node(initial_state, None, 0, None)))
 
-    def solvePuzzle(self):
+    def solve(self):
         """
         Returns a path to the solution of the puzzle.
         """
@@ -69,7 +69,7 @@ class SolvingAgent():
                 x.extend(path)
                 path = x
                 goal = goal.parent
-            return path
+            return [path, len(visited)]
 
 
     def h(self, puzzle):

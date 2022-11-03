@@ -1,7 +1,10 @@
 class Puzzle:
     zero_position = []
 
-    def __init__(self, row0: list, row1: list, row2: list):
+    def __init__(self, rows: list):
+        row0 = rows[:3]
+        row1 = rows[3:6]
+        row2 = rows[6:]
         row00 = []
         row11 = []
         row22 = []
@@ -79,44 +82,10 @@ class Puzzle:
             return None
 
     def copy(self):
-        return Puzzle(self.rows[0].copy(), self.rows[1].copy(), self.rows[2].copy())
+        x = self.rows[0].copy()
+        x.extend(self.rows[1])
+        x.extend(self.rows[2])
+        return Puzzle(x)
 
     def equals(self, another_puzzle):
         return self.rows == another_puzzle.rows
-
-    def getInvCount(self, arr):
-        inv_count = 0
-        empty_value = -1
-        for i in range(0, 2):
-            for j in range(i + 1, 2):
-                if arr[j] != empty_value and arr[i] != empty_value and arr[i] > arr[j]:
-                    inv_count += 1
-        return inv_count
-
-    # This function returns true
-    # if given 8 puzzle is solvable.
-    def isSolvable(self):
-
-        # Count inversions in given 8 puzzle
-        inv_count = self.getInvCount([j for sub in self.rows for j in sub])
-
-        if inv_count == 1:
-            return True
-
-        # return true if inversion count is even.
-        return inv_count % 2 == 0
-
-        # Driver code
-
-
-if __name__ == "__main__":
-    row3 = ['1', '0', '2']
-    row4 = ['3', '4', '5']
-    row5 = ['6', '7', '8']
-
-    p = Puzzle(row3, row4, row5)
-    p2 = Puzzle(row3, row4, row5)
-    p2.printP()
-    print(p2.solved())
-    print(p2.generatePossibleSwaps())
-

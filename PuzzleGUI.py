@@ -2,7 +2,7 @@ from functools import partial
 from tkinter import *
 
 class PuzzleGUI(Tk):
-    def __init__(self, puzzle, solution):
+    def __init__(self, puzzle, solution, explored, timer):
         self.root = Tk()
         self.root.geometry("600x600")
         self.root.config(bg = "#FFA07A")
@@ -17,6 +17,8 @@ class PuzzleGUI(Tk):
         self.labels = dict()    # dictionary mapping each number to the GUI label contining it
         self.puzzle = puzzle
         self.solution = solution
+        self.explored = explored
+        self.timer = timer
 
         c = 0.21
         d = 0.21
@@ -48,7 +50,11 @@ class PuzzleGUI(Tk):
                 self.root.after(500, partial(f, i+1))
             else:
                 Label(self.root, text = f"Cost: {len(self.solution)}", bg="#FFA07A", fg="#2E8B05",
-                    font=("Helvetica", 30)).place(relx = 0.36, rely = 0.1)
+                    font=("Helvetica", 20)).place(relx = 0.05, rely = 0.05)
+                Label(self.root, text = f"Number of explored nodes: {self.explored}", bg="#FFA07A",
+                    fg="#2E8B05",font=("Helvetica", 20)).place(relx = 0.05, rely = 0.1)
+                Label(self.root, text = f"Time to solve: {round(self.timer, 2)} s", bg="#FFA07A",
+                    fg="#2E8B05",font=("Helvetica", 20)).place(relx = 0.5, rely = 0.05)
         f(0)
 
     def moveLabel(self, num: str):

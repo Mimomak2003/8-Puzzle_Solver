@@ -10,9 +10,9 @@ class Node:
         self.swappedNum = swappedNum
 
 
-class solving_agent:
-    def __init__(self, initial_state: Puzzle, BFS_or_DFS: str):  # insert b > bfs and d > dfs
-        self.BFS_or_DFS = BFS_or_DFS.lower()
+class SolvingAgent:
+    def __init__(self, initial_state: Puzzle, BFS_or_DFS: str):
+        self.BFS_or_DFS = BFS_or_DFS
         self.lis = deque()
         self.lis.append(Node(initial_state, None, 0, None))
 
@@ -28,17 +28,13 @@ class solving_agent:
     def solve(self):
         # will contain the final state when the puzzle is solved
         goal: Node = None
-        row0 = [0, 1, 2]
-        row1 = [3, 4, 5]
-        row2 = [6, 7, 8]
-        goalPuzzle = Puzzle(row0, row1, row2)
 
         visited = []
         while not self.empty(self.lis):
             # the state we are currently exploring
-            if self.BFS_or_DFS == "b":
+            if self.BFS_or_DFS == "1":
                 current = self.lis.popleft()
-            elif self.BFS_or_DFS == "d":
+            elif self.BFS_or_DFS == "2":
                 current = self.lis.pop()
 
             #current.value.printP()
@@ -59,7 +55,7 @@ class solving_agent:
                 p = current.value.copy()
                 p.swaps(i)
 
-                if not (self.checkVisited(visited, p)) and current.cost != 20:
+                if not (self.checkVisited(visited, p)) and current.cost != 25:
                     self.lis.append(Node(p, current, current.cost + 1, i))
 
         # AFTER BREAKING OUT FROM THE LOOP
@@ -67,7 +63,6 @@ class solving_agent:
             # If the goal is still none, then it might be unsolvable.
             raise UnSolvablePuzzleError()
         else:
-            goal_cost = goal.cost
             path = []
             while True:
                 if goal.swappedNum is not None:
@@ -77,10 +72,11 @@ class solving_agent:
                     break
                 goal = goal.parent
 
-            return [path, goal_cost]
+            path.reverse()
+            return [path, len(visited)]
 
-    def printPath(self, lis):
-        path = lis[0]
+    def printPath(self):
+        path = self.lis[0]
         for i in range(len(path), 0, -1):
             print(path[i - 1], end="")
             if not (i == 1):
@@ -94,12 +90,12 @@ class UnSolvablePuzzleError(Exception):
     pass
 
 
-if __name__ == '__main__':
-    row3 = ['1', '2', '5']
-    row4 = ['3', '4', '8']
-    row5 = ['6', '0', '7']
-    p2 = Puzzle(row3, row4, row5)
-    dps = solving_agent(p2, "d")
-    solution = dps.solve()
-    print(solution[1])
-    dps.printPath(solution)
+# if __name__ == '__main__':
+#     row3 = ['1', '2', '5']
+#     row4 = ['3', '4', '8']
+#     row5 = ['6', '0', '7']
+#     p2 = Puzzle(row3, row4, row5)
+#     dps = solving_agent(p2, "d")
+#     solution = dps.solve()
+#     print(solution[1])
+#     dps.printPath(solution)
