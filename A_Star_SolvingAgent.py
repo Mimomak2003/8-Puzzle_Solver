@@ -65,7 +65,7 @@ class SolvingAgent():
             # return the path to the goal
             path = []
             while goal.sn is not None:
-                x = [goal.sn]
+                x = [str(goal.sn)]
                 x.extend(path)
                 path = x
                 goal = goal.parent

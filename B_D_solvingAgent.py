@@ -1,4 +1,4 @@
-from bds_puzzle import Puzzle
+from Puzzle import Puzzle
 from collections import deque
 
 
@@ -45,7 +45,7 @@ class SolvingAgent:
                 continue
             visited.append(current.value)
 
-            if current.value.solved():
+            if current.value.checkSolved():
                 # if we reached final state, break out of the loop and set the goal variable to that state
                 goal = current
                 break
@@ -53,9 +53,9 @@ class SolvingAgent:
             swaps = current.value.generatePossibleSwaps()  # available numbers to swap
             for i in swaps:  # add each possibility of them to the queue in addition to the cost
                 p = current.value.copy()
-                p.swaps(i)
+                p.swap(i)
 
-                if not (self.checkVisited(visited, p)) and current.cost != 25:
+                if not (self.checkVisited(visited, p)) and current.cost != 30:
                     self.lis.append(Node(p, current, current.cost + 1, i))
 
         # AFTER BREAKING OUT FROM THE LOOP
@@ -88,14 +88,3 @@ class UnSolvablePuzzleError(Exception):
     The puzzle is unsolvable
     """
     pass
-
-
-# if __name__ == '__main__':
-#     row3 = ['1', '2', '5']
-#     row4 = ['3', '4', '8']
-#     row5 = ['6', '0', '7']
-#     p2 = Puzzle(row3, row4, row5)
-#     dps = solving_agent(p2, "d")
-#     solution = dps.solve()
-#     print(solution[1])
-#     dps.printPath(solution)

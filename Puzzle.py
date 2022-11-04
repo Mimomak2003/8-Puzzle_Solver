@@ -1,12 +1,13 @@
 class Puzzle():
     def __init__(self, rows: list):
-        self.rows = [rows[:3], rows[3:6], rows[6:]]
-        self.zero_position = self.findNum('0')
+        self.rows = [[int(i) for i in rows[:3]], [int(i) for i in rows[3:6]], [int(i) for i in rows[6:]]]
+        self.zero_position = self.findNum(0)
 
     def findNum(self, num: str):
         """
         Finds the position of a given number in the puzzle's matrix.
         """
+        num = int(num)
         for i in range(0, 3):
             try:
                 # Returns the x, y coordinates if the number was in row i.
@@ -18,6 +19,7 @@ class Puzzle():
         """
         Swaps a given number with the '0' mark if possible, else raises a ValueError.
         """
+        num = int(num)
         positions = [ # List of the four possiblities of swapping.
             [self.zero_position[0] - 1, self.zero_position[1]],
             [self.zero_position[0] + 1, self.zero_position[1]],
@@ -51,7 +53,7 @@ class Puzzle():
         return {self.rows[i[0]][i[1]] for i in positions if -1 not in i and 3 not in i}
 
     def checkSolved(self):
-        return self.rows[0] == ['0','1','2'] and self.rows[1] == ['3','4','5'] and self.rows[2] == ['6','7','8']
+        return self.rows[0] == [0, 1, 2] and self.rows[1] == [3, 4, 5] and self.rows[2] == [6, 7, 8]
 
     def copy(self):
         x = self.rows[0].copy()

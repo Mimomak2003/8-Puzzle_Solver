@@ -1,5 +1,4 @@
-import Puzzle
-import bds_puzzle
+from Puzzle import Puzzle
 import A_Star_SolvingAgent
 import B_D_solvingAgent
 from PuzzleGUI import PuzzleGUI
@@ -68,10 +67,10 @@ if working_condition:
             else:
                 break
         
-        puzzle1 = Puzzle.Puzzle(puzzle)
+        puzzle1 = Puzzle(puzzle)
         agent = A_Star_SolvingAgent.SolvingAgent(puzzle1, heuristic)
     else:
-        puzzle1 = bds_puzzle.Puzzle(puzzle)
+        puzzle1 = Puzzle(puzzle)
         agent = B_D_solvingAgent.SolvingAgent(puzzle1, method)
 
     start = time.time()
@@ -84,4 +83,5 @@ if working_condition:
     print(timer)
     explored = solution[1]
 
+    # 643512780
     PuzzleGUI(puzzle, path, explored, timer)
