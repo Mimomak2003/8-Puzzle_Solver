@@ -19,6 +19,14 @@ class PuzzleGUI(Tk):
         self.solution = solution
         self.explored = explored
         self.timer = timer
+        self.condition = False
+
+        Label(self.root, text = f"Cost: {len(self.solution)}", bg="#FFA07A", fg="black",
+            font=("Helvetica", 20)).place(relx = 0.05, rely = 0.05)
+        Label(self.root, text = f"Number of explored nodes: {self.explored}", bg="#FFA07A",
+            fg="black",font=("Helvetica", 20)).place(relx = 0.05, rely = 0.1)
+        Label(self.root, text = f"Time to solve: {round(self.timer, 2)} s", bg="#FFA07A",
+            fg="black",font=("Helvetica", 20)).place(relx = 0.5, rely = 0.05)
 
         c = 0.21
         d = 0.21
@@ -36,6 +44,7 @@ class PuzzleGUI(Tk):
         self.root.mainloop()
 
     def solve(self):
+        if self.condition: return None
         zero = self.puzzle.index('0')
         swapped = self.puzzle.index('0') # The index of the number swapped. Initially set to position of 0.
 
@@ -49,13 +58,11 @@ class PuzzleGUI(Tk):
                 # CHANGE the number 500 below to control the speed of the blocks.
                 self.root.after(500, partial(f, i+1))
             else:
-                Label(self.root, text = f"Cost: {len(self.solution)}", bg="#FFA07A", fg="#2E8B05",
-                    font=("Helvetica", 20)).place(relx = 0.05, rely = 0.05)
-                Label(self.root, text = f"Number of explored nodes: {self.explored}", bg="#FFA07A",
-                    fg="#2E8B05",font=("Helvetica", 20)).place(relx = 0.05, rely = 0.1)
-                Label(self.root, text = f"Time to solve: {round(self.timer, 2)} s", bg="#FFA07A",
-                    fg="#2E8B05",font=("Helvetica", 20)).place(relx = 0.5, rely = 0.05)
+                for i in range(1, 9):
+                    self.labels[str(i)][0].config(bg = 'green')
+                
         f(0)
+        self.condition = True
 
     def moveLabel(self, num: str):
         num_value = self.labels[num]

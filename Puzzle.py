@@ -3,6 +3,13 @@ class Puzzle():
         self.rows = [[int(i) for i in rows[:3]], [int(i) for i in rows[3:6]], [int(i) for i in rows[6:]]]
         self.zero_position = self.findNum(0)
 
+    def __str__(self):
+        string = ""
+        for i in self.rows:
+            for j in i:
+                string += str(j)
+        return string
+
     def findNum(self, num: str):
         """
         Finds the position of a given number in the puzzle's matrix.

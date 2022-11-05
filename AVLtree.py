@@ -1,20 +1,18 @@
-from bds_puzzle import Puzzle  # breadth first and depth first puzzle
 from Puzzle import Puzzle  # a* puzzle
 
 
 class Node:
     # constructor making a node with data
-    def __init__(self, puzzle: Puzzle, value):
+    def __init__(self, puzzle: Puzzle):
         self.puzzle = puzzle
-        self.value = value
         self.left: Node = None
         self.right: Node = None
         self.height = 1
 
 
 class Tree:
-    def __init__(self, puzzle: Puzzle, value):
-        self.root = Node(puzzle, value)
+    def __init__(self, puzzle: Puzzle):
+        self.root = Node(puzzle)
 
     def get_height(self, node: Node):
         if node is None:
@@ -98,17 +96,17 @@ class Tree:
     def add_child(self, puzzle: Puzzle, value):
         self.root = self.insert(self.root, puzzle, value)
 
-    def insert(self, node, puzzle: Puzzle, newValue):
+    def insert(self, node, puzzle: Puzzle):
         # if binary search tree is empty, create a new node and declare it as root
         if node is None:
-            node = Node(puzzle, newValue)
+            node = Node(puzzle)
             return node
         # if newValue is less than value of data in root, add it to left subtree and proceed recursively
-        if newValue < node.value:
-            node.left = self.insert(node.left, puzzle, newValue)
+        if puzzle < node.puzzle:
+            node.left = self.insert(node.left, puzzle)
         # if newValue is greater than value of data in root, add it to right subtree and proceed recursively
-        elif newValue > node.value:
-            node.right = self.insert(node.right, puzzle, newValue)
+        elif puzzle > node.puzzle:
+            node.right = self.insert(node.right, puzzle)
 
         self.update_height(node)
         return self.rebalance(node)
@@ -134,31 +132,3 @@ class Tree:
 
     def PrintTree(self):
         self.print_tree(self.root)
-
-
-if __name__ == "__main__":
-    row3 = ['1', '0', '2']
-    row4 = ['3', '4', '5']
-    row5 = ['6', '7', '8']
-
-    p = Puzzle(row3, row4, row5)
-    p1 = Puzzle(row3, row4, row5)
-    p2 = Puzzle(row3, row4, row5)
-    p3 = Puzzle(row3, row4, row5)
-    p4 = Puzzle(row3, row4, row5)
-    p5 = Puzzle(row3, row4, row5)
-    p6 = Puzzle(row3, row4, row5)
-    p7 = Puzzle(row3, row4, row5)
-    p8 = Puzzle(row3, row4, row5)
-    p9 = Puzzle(row3, row4, row5)
-    t = Tree(p, 20)
-    t.add_child(p1, 19)
-    t.add_child(p2, 21)
-    t.add_child(p3, 18)
-    t.add_child(p4, 22)
-    t.add_child(p5, 17)
-    t.add_child(p6, 23)
-    t.add_child(p7, 16)
-    t.add_child(p8, 24)
-    t.add_child(p9, 15)
-    t.PrintTree()

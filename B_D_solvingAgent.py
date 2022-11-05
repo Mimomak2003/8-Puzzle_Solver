@@ -17,9 +17,7 @@ class SolvingAgent:
         self.lis.append(Node(initial_state, None, 0, None))
 
     def checkVisited(self, visited, to_check):
-        for i in visited:
-            if i.equals(to_check):
-                return True
+        if visited.get(str(to_check)) == 'f': return True
         return False
 
     def empty(self, lis: deque):
@@ -29,7 +27,7 @@ class SolvingAgent:
         # will contain the final state when the puzzle is solved
         goal: Node = None
 
-        visited = []
+        visited = dict()
         while not self.empty(self.lis):
             # the state we are currently exploring
             if self.BFS_or_DFS == "1":
@@ -43,7 +41,7 @@ class SolvingAgent:
 
             if self.checkVisited(visited, current.value):
                 continue
-            visited.append(current.value)
+            visited[str(current.value)] = 'f'
 
             if current.value.checkSolved():
                 # if we reached final state, break out of the loop and set the goal variable to that state
@@ -55,7 +53,7 @@ class SolvingAgent:
                 p = current.value.copy()
                 p.swap(i)
 
-                if not (self.checkVisited(visited, p)) and current.cost != 30:
+                if not (self.checkVisited(visited, p)) and current.cost != 100:
                     self.lis.append(Node(p, current, current.cost + 1, i))
 
         # AFTER BREAKING OUT FROM THE LOOP

@@ -36,14 +36,14 @@ class SolvingAgent():
         Returns a path to the solution of the puzzle.
         """
         goal: Node = None     # will contain the final state when the puzzle is solved
-        visited = []
+        visited = dict()
         while not self.pqueue.empty():
             current = self.pqueue.get()[1]      # the state we are currently exploring
             if self.checkVisited(visited, current.value):
                 # instead of the overhead of checking if the node exists in the PQ every time we put in it,
                 # we just check when getting a node if it was visited or not.
                 continue
-            visited.append(current.value)
+            visited[str(current.value)] = 'f'
 
             if current.value.checkSolved():
                 # if we reached final state, break out of the loop and set the goal variable to that state
@@ -78,7 +78,7 @@ class SolvingAgent():
             for i in range(0, 9):
                 current_coordinates = puzzle.findNum(str(i))
                 num_coordinates = [i // 3, i % 3]
-                final_h = ((current_coordinates[0] - num_coordinates[0])**2 + \
+                final_h += ((current_coordinates[0] - num_coordinates[0])**2 + \
                     (current_coordinates[1] - num_coordinates[1])**2)**(1/2)
         else: # Mannhaten distance
             for i in range(0, 9):
@@ -90,8 +90,7 @@ class SolvingAgent():
         
 
     def checkVisited(self, visited, to_check):
-        for i in visited:
-            if i.equals(to_check): return True
+        if visited.get(str(to_check)) == 'f': return True
         return False
 
 
