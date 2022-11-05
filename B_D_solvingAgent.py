@@ -53,7 +53,7 @@ class SolvingAgent:
                 p = current.value.copy()
                 p.swap(i)
 
-                if not (self.checkVisited(visited, p)) and current.cost != 100:
+                if not (self.checkVisited(visited, p)):
                     self.lis.append(Node(p, current, current.cost + 1, i))
 
         # AFTER BREAKING OUT FROM THE LOOP
