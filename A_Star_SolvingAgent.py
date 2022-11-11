@@ -29,7 +29,7 @@ class SolvingAgent():
         self.pqueue = PriorityQueue()
         self.heuristic = heuristic_type # Mannhaten distance or Euclidean distance
         # Put the initial state into the priority queue with no parent or swapped number, and a cost of 0
-        self.pqueue.put((self.h(initial_state), Node(initial_state, None, 0, None)))
+        self.pqueue.put((self.h(initial_state, None), Node(initial_state, None, 0, None)))
 
     def solve(self):
         """
@@ -55,7 +55,7 @@ class SolvingAgent():
                 p = current.value.copy()
                 p.swap(i)
                 if not self.checkVisited(visited, p):
-                    self.pqueue.put((current.cost + 1 + self.h(p), Node(p, current, current.cost + 1, i)))
+                    self.pqueue.put((current.cost + 1 + self.h(p, i), Node(p, current, current.cost + 1, i)))
 
         # AFTER BREAKING OUT FROM THE LOOP
         if goal is None: 
@@ -72,20 +72,35 @@ class SolvingAgent():
             return [path, len(visited)]
 
 
-    def h(self, puzzle):
+    def h(self, puzzle, last_swapped):
+        if last_swapped is None: return 0
         final_h = 0
-        if self.heuristic == '1': # Eucliden ditance
+        if self.heuristic == '1': # The total eucliden ditance from this state to the final state
             for i in range(0, 9):
                 current_coordinates = puzzle.findNum(str(i))
                 num_coordinates = [i // 3, i % 3]
                 final_h += ((current_coordinates[0] - num_coordinates[0])**2 + \
                     (current_coordinates[1] - num_coordinates[1])**2)**(1/2)
-        else: # Mannhaten distance
+        elif self.heuristic == '2': # The total mannhaten distance from this state to the final state
             for i in range(0, 9):
                 current_coordinates = puzzle.findNum(str(i))
                 num_coordinates = [i // 3, i % 3]
                 final_h += abs(current_coordinates[0] - num_coordinates[0]) + \
                     abs(current_coordinates[1] - num_coordinates[1])
+        elif self.heuristic == '3': # The eucliden distance only for the swapped number (a bad heuristic)
+            puzzle = puzzle.copy()
+            puzzle.swap(last_swapped)
+            current_coordinates = puzzle.findNum(str(last_swapped))
+            num_coordinates = [last_swapped // 3, last_swapped % 3]
+            final_h += ((current_coordinates[0] - num_coordinates[0])**2 + \
+                (current_coordinates[1] - num_coordinates[1])**2)**(1/2)
+        elif self.heuristic == '4': # The mannhaten distance only for the swapped number (a bad heuristic)
+            puzzle = puzzle.copy()
+            puzzle.swap(last_swapped)
+            current_coordinates = puzzle.findNum(str(last_swapped))
+            num_coordinates = [last_swapped // 3, last_swapped % 3]
+            final_h += abs(current_coordinates[0] - num_coordinates[0]) + \
+                abs(current_coordinates[1] - num_coordinates[1])
         return final_h
         
 

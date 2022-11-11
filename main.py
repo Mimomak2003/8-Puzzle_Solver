@@ -60,14 +60,18 @@ if working_condition:
 
     if method == '3':
         while True:
-            print("1- Eucliden ditance\n2- Mannhaten distance")
-            heuristic = input("Enter heuristic (1, 2): ")
-            if heuristic not in ['1', '2']:
+            print("            1- Eucliden ditance (from this state to the final state)\n\
+            2- Mannhaten distance (from this state to the final state)\n\
+            3- Eucliden distance (only for the swapped number)\n\
+            4- Mannhaten distance (only for the swapped number)")
+            heuristic = input("Enter heuristic (1, 2, 3, 4): ")
+            if heuristic not in ['1', '2', '3', '4']:
                 print("Heuristic invalid.")
             else:
                 break
         
         puzzle1 = Puzzle(puzzle)
+        p = puzzle1.copy()
         agent = A_Star_SolvingAgent.SolvingAgent(puzzle1, heuristic)
     else:
         puzzle1 = Puzzle(puzzle)
@@ -85,3 +89,27 @@ if working_condition:
 
     # 643512780
     PuzzleGUI(puzzle, path, explored, timer)
+    if method == '3':
+        # Let the user compare between the two similar heuristics to see that we chose a good heuristic.
+        heuristics = {
+            '1': "calculated only for the swapped number",
+            '2': "calculated only for the swapped number",
+            '3': "calculated from this state to the final state",
+            '4': "calculated from this state to the final state"
+        }
+        y = input(f"Do you want to compare it with the heuristic {heuristics[heuristic]}? (y/n): ")
+        if y == 'y':
+            if heuristic in ['1', '2']: heuristic = str(int(heuristic) + 2)
+            else: heuristic = str(int(heuristic) - 2)
+            agent1 = A_Star_SolvingAgent.SolvingAgent(p, heuristic)
+            start = time.time()
+            solution1 = agent1.solve()
+            end = time.time()
+            timer1 = end - start
+            explored1 = solution1[1]
+
+            # PuzzleGUI(puzzle, solution1[0], explored1, timer1)
+            print(f"Explored nodes for your chosen heuristic: {explored} \
+                Explored nodes for the other heuristic: {explored1}")
+            print(f"Time taken for your chosen heuristic: {round(timer, 2)} \
+                Time taken for the other heuristic: {round(timer1, 2)}")
