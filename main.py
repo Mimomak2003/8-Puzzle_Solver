@@ -18,13 +18,13 @@ def isSolvable(puzzle):
 def checkSolved(puzzle):
     return puzzle == "012345678"
 
-# print("Welcome to our humble 8-puzzle intelligent solver.")
-# sleep(1)
-# print("Our program can solve the puzzle using BFS, DFS and A* algorithm.")
-# sleep(2)
-# print("It can even make coffee if you want it to. ;)")
-# sleep(1)
-# print("")
+ print("Welcome to our humble 8-puzzle intelligent solver.")
+ sleep(1)
+ print("Our program can solve the puzzle using BFS, DFS and A* algorithm.")
+ sleep(2)
+ print("It can even make coffee if you want it to. ;)")
+ sleep(1)
+ print("")
 
 condition = True
 working_condition = True
