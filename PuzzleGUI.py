@@ -2,8 +2,9 @@ from functools import partial
 from tkinter import *
 
 class PuzzleGUI(Tk):
-    def __init__(self, puzzle, solution, explored, timer):
+    def __init__(self, puzzle, solution, explored, timer, max_depth):
         self.root = Tk()
+        self.root.title("8-Puzzle Solver")
         self.root.geometry("600x600")
         self.root.config(bg = "#FFA07A")
 
@@ -19,14 +20,17 @@ class PuzzleGUI(Tk):
         self.solution = solution
         self.explored = explored
         self.timer = timer
+        self.max_depth = max_depth
         self.condition = False
 
         Label(self.root, text = f"Cost: {len(self.solution)}", bg="#FFA07A", fg="black",
-            font=("Helvetica", 20)).place(relx = 0.05, rely = 0.05)
-        Label(self.root, text = f"Number of explored nodes: {self.explored}", bg="#FFA07A",
+            font=("Helvetica", 20)).place(relx = 0.05, rely = 0.03)
+        Label(self.root, text = f"Explored: {self.explored}", bg="#FFA07A",
             fg="black",font=("Helvetica", 20)).place(relx = 0.05, rely = 0.1)
         Label(self.root, text = f"Time to solve: {round(self.timer, 2)} s", bg="#FFA07A",
-            fg="black",font=("Helvetica", 20)).place(relx = 0.5, rely = 0.05)
+            fg="black",font=("Helvetica", 20)).place(relx = 0.5, rely = 0.03)
+        Label(self.root, text = f"Search depth: {self.max_depth}", bg="#FFA07A",
+            fg="black",font=("Helvetica", 20)).place(relx = 0.5, rely = 0.1)
 
         c = 0.21
         d = 0.21

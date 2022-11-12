@@ -37,8 +37,10 @@ class SolvingAgent():
         """
         goal: Node = None     # will contain the final state when the puzzle is solved
         visited = dict()
+        max_depth = 0
         while not self.pqueue.empty():
             current = self.pqueue.get()[1]      # the state we are currently exploring
+            if current.cost > max_depth: max_depth = current.cost
             if self.checkVisited(visited, current.value):
                 # instead of the overhead of checking if the node exists in the PQ every time we put in it,
                 # we just check when getting a node if it was visited or not.
@@ -69,7 +71,7 @@ class SolvingAgent():
                 x.extend(path)
                 path = x
                 goal = goal.parent
-            return [path, len(visited)]
+            return [path, len(visited), max_depth]
 
 
     def h(self, puzzle, last_swapped):

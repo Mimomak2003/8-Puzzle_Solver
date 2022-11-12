@@ -18,13 +18,13 @@ def isSolvable(puzzle):
 def checkSolved(puzzle):
     return puzzle == "012345678"
 
- print("Welcome to our humble 8-puzzle intelligent solver.")
- sleep(1)
- print("Our program can solve the puzzle using BFS, DFS and A* algorithm.")
- sleep(2)
- print("It can even make coffee if you want it to. ;)")
- sleep(1)
- print("")
+print("Welcome to our humble 8-puzzle intelligent solver.")
+time.sleep(1)
+print("Our program can solve the puzzle using BFS, DFS and A* algorithm.")
+time.sleep(2)
+print("It can even make coffee if you want it to. ;)")
+time.sleep(1)
+print("")
 
 condition = True
 working_condition = True
@@ -86,9 +86,11 @@ if working_condition:
     print(path)
     print(timer)
     explored = solution[1]
+    max_depth = solution[2]
+    print(max_depth)
 
     # 643512780
-    PuzzleGUI(puzzle, path, explored, timer)
+    PuzzleGUI(puzzle, path, explored, timer, max_depth)
     if method == '3':
         # Let the user compare between the two similar heuristics to see that we chose a good heuristic.
         heuristics = {
@@ -107,9 +109,12 @@ if working_condition:
             end = time.time()
             timer1 = end - start
             explored1 = solution1[1]
+            max_depth1 = solution1[2]
 
             # PuzzleGUI(puzzle, solution1[0], explored1, timer1)
             print(f"Explored nodes for your chosen heuristic: {explored} \
                 Explored nodes for the other heuristic: {explored1}")
             print(f"Time taken for your chosen heuristic: {round(timer, 2)} \
                 Time taken for the other heuristic: {round(timer1, 2)}")
+            print(f"Search depth for your chosen heuristic: {max_depth} \
+                Search depth for the other heuristic: {max_depth1}")

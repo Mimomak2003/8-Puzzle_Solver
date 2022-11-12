@@ -28,6 +28,7 @@ class SolvingAgent:
         goal: Node = None
 
         visited = dict()
+        max_depth = 0
         while not self.empty(self.lis):
             # the state we are currently exploring
             if self.BFS_or_DFS == "1":
@@ -35,10 +36,7 @@ class SolvingAgent:
             elif self.BFS_or_DFS == "2":
                 current = self.lis.pop()
 
-            #current.value.printP()
-            #depth = current.cost
-            #print(depth)
-
+            if current.cost > max_depth: max_depth = current.cost
             if self.checkVisited(visited, current.value):
                 continue
             visited[str(current.value)] = 'f'
@@ -71,7 +69,7 @@ class SolvingAgent:
                 goal = goal.parent
 
             path.reverse()
-            return [path, len(visited)]
+            return [path, len(visited), max_depth]
 
     def printPath(self):
         path = self.lis[0]
