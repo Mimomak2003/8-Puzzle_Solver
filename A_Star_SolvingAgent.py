@@ -5,7 +5,7 @@ class Node():
     """
     Node class to save the data in.
     """
-    def __init__(self, value: Puzzle, parent, cost_from_root, swapped_num):
+    def __init__(self, value: Puzzle, parent, cost_from_root: int, swapped_num: int):
         self.value = value
         self.parent = parent
         self.cost = cost_from_root
@@ -25,13 +25,17 @@ class Node():
         return int(self.sn) > int(other.sn)
 
 class SolvingAgent():
+    """
+    An AI agent that solves the 8-Puzzle problem using the A* algorithm.
+    It uses a priority queue data structure to store the puzzle states.
+    """
     def __init__(self, initial_state: Puzzle, heuristic_type: str):
         self.pqueue = PriorityQueue()
         self.heuristic = heuristic_type # Mannhaten distance or Euclidean distance
         # Put the initial state into the priority queue with no parent or swapped number, and a cost of 0
-        self.pqueue.put((self.h(initial_state, None), Node(initial_state, None, 0, None)))
+        self.pqueue.put((self._h(initial_state, None), Node(initial_state, None, 0, None)))
 
-    def solve(self):
+    def solve(self) -> list[list[int], int]:
         """
         Returns a path to the solution of the puzzle.
         """
@@ -45,7 +49,7 @@ class SolvingAgent():
                 # instead of the overhead of checking if the node exists in the PQ every time we put in it,
                 # we just check when getting a node if it was visited or not.
                 continue
-            visited[str(current.value)] = 'f'
+            visited[str(current.value)] = 'f' # Mark Puzzle state as visited
 
             if current.value.checkSolved():
                 # if we reached final state, break out of the loop and set the goal variable to that state
@@ -53,11 +57,11 @@ class SolvingAgent():
                 break
 
             swaps = current.value.generatePossibleSwaps() # available numbers to swap
-            for i in swaps: # add each possiblity of them to the queue in addition to the heuristic + cost
+            for i in swaps: # add each possiblity of them to the PQ in addition to the heuristic + cost
                 p = current.value.copy()
                 p.swap(i)
                 if not self.checkVisited(visited, p):
-                    self.pqueue.put((current.cost + 1 + self.h(p, i), Node(p, current, current.cost + 1, i)))
+                    self.pqueue.put((current.cost + 1 + self._h(p, i), Node(p, current, current.cost + 1, i)))
 
         # AFTER BREAKING OUT FROM THE LOOP
         if goal is None: 
@@ -74,7 +78,7 @@ class SolvingAgent():
             return [path, len(visited), max_depth]
 
 
-    def h(self, puzzle, last_swapped):
+    def _h(self, puzzle: Puzzle, last_swapped: int):
         if last_swapped is None: return 0
         final_h = 0
         if self.heuristic == '1': # The total eucliden ditance from this state to the final state
@@ -106,7 +110,7 @@ class SolvingAgent():
         return final_h
         
 
-    def checkVisited(self, visited, to_check):
+    def checkVisited(self, visited: dict[Puzzle, str], to_check: Puzzle) -> bool:
         if visited.get(str(to_check)) == 'f': return True
         return False
 
