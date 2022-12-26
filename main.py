@@ -1,6 +1,7 @@
 from Puzzle import Puzzle
 import A_Star_SolvingAgent
 import B_D_solvingAgent
+import IDS_SolvingAgent
 from PuzzleGUI import PuzzleGUI
 import time
 
@@ -18,13 +19,13 @@ def isSolvable(puzzle):
 def checkSolved(puzzle):
     return puzzle == "012345678"
 
-print("Welcome to our humble 8-puzzle intelligent solver.")
-time.sleep(1)
-print("Our program can solve the puzzle using BFS, DFS and A* algorithm.")
-time.sleep(2)
-print("It can even make coffee if you want it to. ;)")
-time.sleep(1)
-print("")
+# print("Welcome to our humble 8-puzzle intelligent solver.")
+# time.sleep(1)
+# print("Our program can solve the puzzle using BFS, DFS and A* algorithm.")
+# time.sleep(2)
+# print("It can even make coffee if you want it to. ;)")
+# time.sleep(1)
+# print("")
 
 condition = True
 working_condition = True
@@ -51,9 +52,9 @@ while condition:
 
 if working_condition:
     while True:
-        print("1- BFS\n2- DFS\n3- A*")
-        method = input("Enter the solving method (1, 2, 3): ")
-        if method not in ['1', '2', '3']:
+        print("1- BFS\n2- DFS\n3- A*\n4- IDS")
+        method = input("Enter the solving method (1, 2, 3, 4): ")
+        if method not in ['1', '2', '3', '4']:
             print("Method invalid.")
         else:
             break
@@ -73,6 +74,9 @@ if working_condition:
         puzzle1 = Puzzle(puzzle)
         p = puzzle1.copy()
         agent = A_Star_SolvingAgent.SolvingAgent(puzzle1, heuristic)
+    elif method == '4':
+        puzzle1 = Puzzle(puzzle)
+        agent = IDS_SolvingAgent.SolvingAgent(puzzle1)
     else:
         puzzle1 = Puzzle(puzzle)
         agent = B_D_solvingAgent.SolvingAgent(puzzle1, method)
@@ -90,6 +94,9 @@ if working_condition:
     print(max_depth)
 
     # 643512780
+    # 543021867
+    # 876543210
+    # 346820157
     PuzzleGUI(puzzle, path, explored, timer, max_depth)
     if method == '3':
         # Let the user compare between the two similar heuristics to see that we chose a good heuristic.
